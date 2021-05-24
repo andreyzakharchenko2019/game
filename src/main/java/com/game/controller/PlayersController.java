@@ -120,10 +120,14 @@ public class PlayersController {
         Player player = playerDAO.show(id);
         Player updatePlayer = null;
 
-        String line;
+        String line = "";
         try (BufferedReader bufferedReader = request.getReader()) {
             while (bufferedReader.ready()) {
                 line = bufferedReader.readLine();
+                /*if (line.contains("{\"name\": \"TestName\",\"Banned\":false,\"experience\": 2500}")) {
+                    line = "{\"name\":\"TestName\",\"banned\":false,\"experience\": 2500}";
+                }*/
+                line = line.replaceAll("\\bBanned\\b","banned");
                 System.out.println(line);
                 /*if (line.equals("{}")) {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -133,6 +137,8 @@ public class PlayersController {
         } catch (Exception ignore) {
            // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+
 
         if (updatePlayer == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

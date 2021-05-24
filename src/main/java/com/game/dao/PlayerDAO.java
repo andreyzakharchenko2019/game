@@ -176,14 +176,22 @@ public class PlayerDAO {
 
         currentLevel(player, player.getExperience());
 
+        System.out.println(player);
+        System.out.println(player.getBirthday());
+
+
         jdbcTemplate.update("INSERT INTO player(name, title, race, profession, birthday, banned, " +
                         "experience, level, untilNextLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                 player.getName(), player.getTitle(), player.getRace().name(), player.getProfession().name(),
-                player.getBirthday(), player.isBanned(), player.getExperience(), player.getLevel(),
+                new Date(player.getBirthday().getTime()), player.isBanned(), player.getExperience(), player.getLevel(),
                 player.getUntilNextLevel());
 
+        Player fromDbPlayer = index().get(index().size() - 1);
+        Date bigCostilDate = new Date(player.getBirthday().getTime());
+        fromDbPlayer.setBirthday(bigCostilDate);
 
-        return index().get(index().size() - 1);
+
+        return fromDbPlayer;
     }
 
     public Player updatePlayer(Player player, Player updatePlayer) {
